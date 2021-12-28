@@ -20,6 +20,9 @@ class LauncherItem(QWidget):
                  parent: Optional[QWidget] = None) -> None:
         super().__init__(parent)
 
+        self._index: Final[int] = LauncherItem._count
+        LauncherItem._count += 1
+
         self._icon: QLabel = QLabel(self)
         self._alias_label: QLabel = QLabel(self)
         self._launch_button: QToolButton = QToolButton(self)
@@ -50,9 +53,6 @@ class LauncherItem(QWidget):
         self._launch_button.clicked.connect(self.on_launch)
         self._edit_action.triggered.connect(self.on_edit)
         self._delete_action.triggered.connect(self.on_delete)
-
-        self._index: Final[int] = LauncherItem._count
-        LauncherItem._count += 1
 
     @property
     def index(self) -> int:
@@ -97,9 +97,12 @@ class LauncherItem(QWidget):
     def on_edit(self) -> None:
         dialog: EditDialog = EditDialog(self._alias_label.text(), self._executable, args=self._arguments, parent=self)
         dialog.exec()
-        self._alias_label.setText(dialog.alias)
-        self._executable = dialog.executable
-        self._arguments = list(dialog.args)
+        if dialog.result() == EditDialog.Accepted:
+            self._alias_label.setText(dialog.alias)
+            self._executable = dialog.executable
+            self._arguments = list(dialog.args)
+        elif not self._alias_label.text() or not self._executable:
+            self.on_delete()
 
     def on_delete(self) -> None:
         self.hide()
