@@ -60,7 +60,14 @@ class FilePathEntry(QWidget):
             self.path = None
             return
 
-        path: Path = Path(text).resolve()
+        try:
+            path: Path = Path(text).resolve()
+        except OSError:
+            self._status.setPixmap(self.style()
+                                   .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
+                                   .pixmap(self._text.height()))
+            self.path = None
+            return
         if path.is_dir():
             self._status.setPixmap(self.style()
                                    .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
@@ -75,8 +82,7 @@ class FilePathEntry(QWidget):
             return
         try:
             pathvalidate.validate_filepath(path, platform='auto')
-        except pathvalidate.error.ValidationError as ex:
-            print(ex.description)
+        except pathvalidate.error.ValidationError:
             self._status.setPixmap(self.style()
                                    .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
                                    .pixmap(self._text.height()))
