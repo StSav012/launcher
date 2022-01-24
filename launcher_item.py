@@ -88,7 +88,7 @@ class LauncherItem(QWidget):
     def on_launch(self) -> None:
         self.setEnabled(False)
         try:
-            subprocess.Popen(executable=self._executable, args=self._arguments)
+            subprocess.Popen([self._executable, *self._arguments])
         except FileNotFoundError:
             QMessageBox.warning(self, self.tr('Error'), self.tr('File not found'))
         except PermissionError as ex:
@@ -100,7 +100,7 @@ class LauncherItem(QWidget):
         if dialog.result() == EditDialog.Accepted:
             self._alias_label.setText(dialog.alias)
             self._executable = dialog.executable
-            self._arguments = list(dialog.args)
+            self._arguments = tuple(dialog.args)
         elif not self._alias_label.text() or not self._executable:
             self.on_delete()
 
