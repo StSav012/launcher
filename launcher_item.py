@@ -38,7 +38,7 @@ class LauncherItem(QWidget):
         self._edit_action: QAction = QAction(self.tr('Edit'), self)
         self._delete_action: QAction = QAction(self.tr('Delete'), self)
         self._executable: str = executable
-        self._arguments: Tuple[str] = tuple(arguments)
+        self._arguments: Tuple[str, ...] = tuple(arguments)
 
         self._menu.addActions((self._edit_action, self._delete_action))
 
@@ -75,7 +75,7 @@ class LauncherItem(QWidget):
         return self._executable
 
     @property
-    def arguments(self) -> Tuple[str]:
+    def arguments(self) -> Tuple[str, ...]:
         return self._arguments
 
     def mouseDoubleClickEvent(self, event: QMouseEvent):

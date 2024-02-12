@@ -10,7 +10,7 @@ from launcher_item_list import LauncherItemList
 
 
 class Window(QMainWindow):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle(self.tr('Launcher'))
         self.setWindowIcon(QIcon('icon.svg'))
