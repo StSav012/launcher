@@ -1,5 +1,5 @@
 # coding: utf-8
-import subprocess
+from subprocess import run
 from typing import Final, Iterable, Optional, Tuple
 
 from qtpy.QtCore import QEvent, Qt, Signal
@@ -96,7 +96,7 @@ class LauncherItem(QWidget):
     def on_launch(self) -> None:
         self.setEnabled(False)
         try:
-            subprocess.Popen([self._executable, *self._arguments])
+            run([self._executable, *self._arguments])
         except FileNotFoundError:
             QMessageBox.warning(self, self.tr('Error'), self.tr('File not found'))
         except PermissionError as ex:
