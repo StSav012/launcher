@@ -6,7 +6,7 @@ from qtpy.QtWidgets import QPushButton, QScrollArea, QVBoxLayout, QWidget
 
 from launcher_item import LauncherItem
 
-__all__ = ['LauncherItemList']
+__all__ = ["LauncherItemList"]
 
 
 class LauncherItemList(QScrollArea):
@@ -19,7 +19,7 @@ class LauncherItemList(QScrollArea):
         self.setWidget(w)
         self.setWidgetResizable(True)
         self._layout: QVBoxLayout = QVBoxLayout(w)
-        self._button_add: QPushButton = QPushButton(self.tr('Add'), w)
+        self._button_add: QPushButton = QPushButton(self.tr("Add"), w)
         self._button_add.clicked.connect(self.on_add_clicked)
         self._layout.addWidget(self._button_add)
         self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
@@ -35,8 +35,20 @@ class LauncherItemList(QScrollArea):
     def on_add_clicked(self) -> None:
         self.add_item()
 
-    def add_item(self, alias: str = '', executable: str = '', arguments: Iterable[str] = ()) -> None:
-        self._items.append(LauncherItem(alias, executable=executable, arguments=arguments, parent=self))
+    def add_item(
+        self,
+        alias: str = "",
+        executable: str = "",
+        arguments: Iterable[str] = (),
+    ) -> None:
+        self._items.append(
+            LauncherItem(
+                alias=alias,
+                executable=executable,
+                arguments=arguments,
+                parent=self,
+            )
+        )
         self._layout.insertWidget(len(self._items) - 1, self._items[-1])
         self._items[-1].deleted.connect(self.delete_item)
 

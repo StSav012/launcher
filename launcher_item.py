@@ -16,16 +16,21 @@ from qtpy.QtWidgets import (
 
 from edit_dialog import EditDialog
 
-__all__ = ['LauncherItem']
+__all__ = ["LauncherItem"]
 
 
 class LauncherItem(QWidget):
     _count: int = 0
 
-    deleted: Signal = Signal(int, name='deleted')
+    deleted: Signal = Signal(int, name="deleted")
 
-    def __init__(self, alias: str, executable: str = '', arguments: Iterable[str] = (),
-                 parent: Optional[QWidget] = None) -> None:
+    def __init__(
+        self,
+        alias: str,
+        executable: str = "",
+        arguments: Iterable[str] = (),
+        parent: Optional[QWidget] = None,
+    ) -> None:
         super().__init__(parent)
 
         self._index: Final[int] = LauncherItem._count
@@ -35,8 +40,8 @@ class LauncherItem(QWidget):
         self._alias_label: QLabel = QLabel(self)
         self._launch_button: QToolButton = QToolButton(self)
         self._menu: QMenu = QMenu(self)
-        self._edit_action: QAction = QAction(self.tr('Edit'), self)
-        self._delete_action: QAction = QAction(self.tr('Delete'), self)
+        self._edit_action: QAction = QAction(self.tr("Edit"), self)
+        self._delete_action: QAction = QAction(self.tr("Delete"), self)
         self._executable: str = executable
         self._arguments: Tuple[str, ...] = tuple(arguments)
 
@@ -52,11 +57,15 @@ class LauncherItem(QWidget):
         else:
             self._alias_label.setText(alias)
 
-        self._icon.setPixmap(self.style()
-                             .standardIcon(QStyle.StandardPixmap.SP_CommandLink)
-                             .pixmap(self._alias_label.height()))
-        self._launch_button.setIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowRight))
-        self._launch_button.setText(self.tr('Launch'))
+        self._icon.setPixmap(
+            self.style()
+            .standardIcon(QStyle.StandardPixmap.SP_CommandLink)
+            .pixmap(self._alias_label.height())
+        )
+        self._launch_button.setIcon(
+            self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowRight)
+        )
+        self._launch_button.setText(self.tr("Launch"))
 
         self._launch_button.clicked.connect(self.on_launch)
         self._edit_action.triggered.connect(self.on_edit)
@@ -98,12 +107,21 @@ class LauncherItem(QWidget):
         try:
             run([self._executable, *self._arguments])
         except FileNotFoundError:
-            QMessageBox.warning(self, self.tr('Error'), self.tr('File not found'))
+            QMessageBox.warning(
+                self,
+                self.tr("Error"),
+                self.tr("The file has not been found"),
+            )
         except PermissionError as ex:
-            QMessageBox.warning(self, self.tr('Error'), ex.strerror)
+            QMessageBox.warning(self, self.tr("Error"), ex.strerror)
 
     def on_edit(self) -> None:
-        dialog: EditDialog = EditDialog(self._alias_label.text(), self._executable, args=self._arguments, parent=self)
+        dialog: EditDialog = EditDialog(
+            self._alias_label.text(),
+            self._executable,
+            args=self._arguments,
+            parent=self,
+        )
         dialog.exec()
         if dialog.result() == EditDialog.DialogCode.Accepted:
             self._alias_label.setText(dialog.alias)

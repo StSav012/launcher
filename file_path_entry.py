@@ -15,13 +15,17 @@ from qtpy.QtWidgets import (
     QWidget,
 )
 
-__all__ = ['FilePathEntry']
+__all__ = ["FilePathEntry"]
 
 
 class FilePathEntry(QWidget):
-    changed: Signal = Signal(bool, name='changed')
+    changed: Signal = Signal(bool, name="changed")
 
-    def __init__(self, initial_file_path: str = '', parent: Optional[QWidget] = None):
+    def __init__(
+        self,
+        initial_file_path: str = "",
+        parent: Optional[QWidget] = None,
+    ) -> None:
         super().__init__(parent)
 
         self._path: Optional[Path] = None
@@ -34,7 +38,7 @@ class FilePathEntry(QWidget):
         self._status: QLabel = QLabel(self)
         self.layout().addWidget(self._status)
 
-        self._browse_button: QPushButton = QPushButton(self.tr('Browse…'), self)
+        self._browse_button: QPushButton = QPushButton(self.tr("Browse…"), self)
         self._browse_button.clicked.connect(self.on_browse_button_clicked)
         self.layout().addWidget(self._browse_button)
 
@@ -59,7 +63,7 @@ class FilePathEntry(QWidget):
         self.changed.emit(self.valid)
 
     def on_text_changed(self, text: str) -> None:
-        """ display an icon showing whether the entered file name is acceptable """
+        """display an icon showing whether the entered file name is acceptable"""
 
         self._text.setToolTip(text)
 
@@ -71,29 +75,37 @@ class FilePathEntry(QWidget):
         try:
             path: Path = Path(text).resolve()
         except OSError:
-            self._status.setPixmap(self.style()
-                                   .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
-                                   .pixmap(self._text.height()))
+            self._status.setPixmap(
+                self.style()
+                .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
+                .pixmap(self._text.height())
+            )
             self.path = None
             return
         if path.is_dir():
-            self._status.setPixmap(self.style()
-                                   .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
-                                   .pixmap(self._text.height()))
+            self._status.setPixmap(
+                self.style()
+                .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
+                .pixmap(self._text.height())
+            )
             self.path = None
             return
         if not path.exists():
-            self._status.setPixmap(self.style()
-                                   .standardIcon(QStyle.StandardPixmap.SP_MessageBoxWarning)
-                                   .pixmap(self._text.height()))
+            self._status.setPixmap(
+                self.style()
+                .standardIcon(QStyle.StandardPixmap.SP_MessageBoxWarning)
+                .pixmap(self._text.height())
+            )
             self.path = path
             return
         try:
-            pathvalidate.validate_filepath(path, platform='auto')
+            pathvalidate.validate_filepath(path, platform="auto")
         except pathvalidate.error.ValidationError:
-            self._status.setPixmap(self.style()
-                                   .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
-                                   .pixmap(self._text.height()))
+            self._status.setPixmap(
+                self.style()
+                .standardIcon(QStyle.StandardPixmap.SP_MessageBoxCritical)
+                .pixmap(self._text.height())
+            )
             self.path = None
         else:
             self._status.clear()
@@ -102,8 +114,14 @@ class FilePathEntry(QWidget):
     def on_browse_button_clicked(self) -> None:
         new_file_name: str
         new_file_name, _ = QFileDialog.getOpenFileName(
-            self, self.tr('Pick Executable'),
-            str(self.path or ''),
-            self.tr('Microsoft Windows Executable') + ' (*.exe)' if sys.platform.startswith('win') else '')
+            self,
+            self.tr("Pick Executable"),
+            str(self.path or ""),
+            (
+                self.tr("Microsoft Windows Executable") + " (*.exe)"
+                if sys.platform.startswith("win")
+                else ""
+            ),
+        )
         if new_file_name:
             self._text.setText(new_file_name)
