@@ -1,9 +1,9 @@
 # coding: utf-8
 import sys
 
-from PySide6.QtCore import QByteArray, QPoint, QRect, QSettings
-from PySide6.QtGui import QCloseEvent, QIcon, QScreen
-from PySide6.QtWidgets import QApplication, QMainWindow
+from qtpy.QtCore import QByteArray, QPoint, QRect, QSettings
+from qtpy.QtGui import QCloseEvent, QIcon, QScreen
+from qtpy.QtWidgets import QApplication, QMainWindow
 
 from launcher_item import LauncherItem
 from launcher_item_list import LauncherItemList

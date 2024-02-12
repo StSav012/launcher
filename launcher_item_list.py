@@ -1,8 +1,8 @@
 # coding: utf-8
 from typing import Iterable, List, Optional
 
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QPushButton, QScrollArea, QVBoxLayout, QWidget
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QPushButton, QScrollArea, QVBoxLayout, QWidget
 
 from launcher_item import LauncherItem
 

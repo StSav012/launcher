@@ -2,7 +2,14 @@
 import os
 from typing import Iterable, List, Optional
 
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QFormLayout, QLineEdit, QTextEdit, QWidget
+from qtpy.QtWidgets import (
+    QDialog,
+    QDialogButtonBox,
+    QFormLayout,
+    QLineEdit,
+    QTextEdit,
+    QWidget,
+)
 
 from file_path_entry import FilePathEntry
 

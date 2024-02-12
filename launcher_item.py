@@ -2,9 +2,17 @@
 import subprocess
 from typing import Final, Iterable, Optional, Tuple
 
-from PySide6.QtCore import QEvent, Qt, Signal
-from PySide6.QtGui import QAction, QContextMenuEvent, QMouseEvent
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QMenu, QMessageBox, QStyle, QToolButton, QWidget
+from qtpy.QtCore import QEvent, Qt, Signal
+from qtpy.QtGui import QAction, QContextMenuEvent, QMouseEvent
+from qtpy.QtWidgets import (
+    QHBoxLayout,
+    QLabel,
+    QMenu,
+    QMessageBox,
+    QStyle,
+    QToolButton,
+    QWidget,
+)
 
 from edit_dialog import EditDialog
 
