@@ -22,7 +22,7 @@ class LauncherItemList(QScrollArea):
         self._button_add: QPushButton = QPushButton(self.tr('Add'), w)
         self._button_add.clicked.connect(self.on_add_clicked)
         self._layout.addWidget(self._button_add)
-        self._layout.setAlignment(Qt.AlignTop)
+        self._layout.setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self._items: List[LauncherItem] = []
 

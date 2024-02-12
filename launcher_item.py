@@ -105,7 +105,7 @@ class LauncherItem(QWidget):
     def on_edit(self) -> None:
         dialog: EditDialog = EditDialog(self._alias_label.text(), self._executable, args=self._arguments, parent=self)
         dialog.exec()
-        if dialog.result() == EditDialog.Accepted:
+        if dialog.result() == EditDialog.DialogCode.Accepted:
             self._alias_label.setText(dialog.alias)
             self._executable = dialog.executable
             self._arguments = tuple(dialog.args)
